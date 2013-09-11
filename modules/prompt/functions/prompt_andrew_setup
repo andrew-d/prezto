@@ -14,13 +14,9 @@ function prompt_andrew_check_git {
   local st="$(git status --ignore-submodules 2>/dev/null)"
   if [[ -n "$st" ]]; then
     if [[ ! $st =~ 'nothing to commit' ]]; then
-      zstyle ':prezto:module:git:info:keys' format \
-        'prompt' "${__andrew_git_prompt}" \
-        'eprompt' '⚡'
+      __andrew_git_extra='⚡'
     else
-      zstyle ':prezto:module:git:info:keys' format \
-        'prompt' "${__andrew_git_prompt}" \
-        'eprompt' ''
+      __andrew_git_extra=''
     fi
   fi
 }
@@ -92,8 +88,7 @@ function prompt_andrew_setup {
   #zstyle ':prezto:module:git:info:modified' format "${__PROMPT_ANDREW_COLORS[4]}●mod%f"
 
   # Actual prompt info
-  __andrew_git_prompt='on %b%A%B%u'
-  zstyle ':prezto:module:git:info:keys' format 'prompt' "${__andrew_git_prompt}"
+  zstyle ':prezto:module:git:info:keys' format 'prompt' 'on %b%A%B%u'
 
   # ruby info (rvm, rbenv)
   #zstyle ':prezto:module:ruby:info:version' format '[%v]'
@@ -101,7 +96,7 @@ function prompt_andrew_setup {
   # Call our info function so the first status line is accurate.
   prompt_andrew_check_git
 
-  PROMPT="${__PROMPT_ANDREW_COLORS[3]}%n%f at ${__PROMPT_ANDREW_COLORS[2]}%m%f in ${__PROMPT_ANDREW_COLORS[5]}%~%f "'$git_info[prompt]''$git_info[eprompt]'"
+  PROMPT="${__PROMPT_ANDREW_COLORS[3]}%n%f at ${__PROMPT_ANDREW_COLORS[2]}%m%f in ${__PROMPT_ANDREW_COLORS[5]}%~%f "'$git_info[prompt]''${__andrew_git_extra}'"
 $ "
   SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
   RPROMPT=''
