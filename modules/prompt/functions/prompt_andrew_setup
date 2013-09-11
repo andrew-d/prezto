@@ -11,12 +11,13 @@
 #   Andrew Dunham <andrew@du.nham.ca>
 
 function prompt_andrew_check_git {
+  # Clear by default
+  __andrew_git_extra=''
+
   local st="$(git status --ignore-submodules 2>/dev/null)"
   if [[ -n "$st" ]]; then
     if [[ ! $st =~ 'nothing to commit' ]]; then
       __andrew_git_extra='⚡'
-    else
-      __andrew_git_extra=''
     fi
   fi
 }
