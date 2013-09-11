@@ -10,5 +10,158 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Customize to your needs...
+# =============================================================================
+# SHELL CONFIGURATION
+# -----------------------------------------------------------------------------
 
+# Autoload modules.  In order:
+#   colors              Enable colors in ZSH scripts
+#   zsh-mime-setup      Set suffix aliases based on the host system
+autoload -U colors zsh-mime-setup
+if [[ "$terminfo[colors]" -gt 8 ]]; then
+    colors
+fi
+
+# History config.
+export HISTSIZE=32768
+export SAVEHIST=$HISTSIZE
+export HISTFILESIZE=$HISTSIZE
+
+# Make some commands not show up in history
+export HISTIGNORE="ls:[bf]g:pwd:exit:date:clear"
+
+# Share history between multiple shells.
+setopt SHARE_HISTORY
+
+# Append history, don't overwrite.
+setopt APPEND_HISTORY
+
+# Only remember last command in a sequence of duplicate commands.
+setopt HIST_IGNORE_DUPS
+
+# Reduce blanks in remembered history.
+setopt HIST_REDUCE_BLANKS
+
+# Save each command's start time and duration to the history file.
+setopt EXTENDED_HISTORY
+
+# When searching for history, don't display duplicates.
+setopt HIST_FIND_NO_DUPS
+
+# When expiring from the history file, remove an older, duplicate entry
+# preferentially, compared to an older but unique line.
+setopt HIST_EXPIRE_DUPS_FIRST
+
+# Wait 10 seconds when executing 'rm *' or 'rm path/*'
+setopt RM_STAR_WAIT
+
+# Automatically 'cd' into directories.
+setopt AUTO_CD
+
+# A blank 'pushd' will go to $HOME by default.
+setopt PUSHD_TO_HOME
+
+# Don't send the HUP signal to jobs on exit.
+setopt NO_HUP
+
+# Report status of background jobs if we try and exit while they're still
+# running.  Note that a second attempt will exit for real.
+setopt CHECK_JOBS
+
+# Beeps are annoying
+setopt NO_BEEP
+
+# If numeric filenames are matched, order them numerically and not lexically.
+setopt NUMERIC_GLOB_SORT
+
+# Enable '#', '~' and '^' character globbing.
+setopt EXTENDED_GLOB
+
+# Move the cursor to the end of a word after completion.
+setopt ALWAYS_TO_END
+
+# Add home-directory bin path, for scripts that I want in my PATH.
+export PATH=$PATH:~/.bin
+
+# =============================================================================
+# TOOL CONFIGURATION
+# -----------------------------------------------------------------------------
+# Color for grep.
+export GREP_OPTIONS='--color=auto'
+
+# If it exists, use source-highlight.
+if command -v "source-highlight" >/dev/null 2>&1; then
+  export LESSOPEN="| /usr/local/bin/src-hilite-lesspipe.sh %s"
+  alias less="less -R "
+fi
+
+# Make Pythonz work
+[[ -s $HOME/.pythonz/etc/bashrc ]] && source $HOME/.pythonz/etc/bashrc
+
+# Make the .pythonrc.py file start.
+export PYTHONSTARTUP=~/.pythonrc.py
+
+# Change virtualenvwrapper's home directory, make sure it exists.
+export WORKON_HOME=~/.virtualenvs
+mkdir -p $WORKON_HOME
+[[ -e /usr/local/bin/virtualenvwrapper.sh ]] && source /usr/local/bin/virtualenvwrapper.sh
+
+# Set Go path and binary directory.
+export GOPATH=$HOME/go
+mkdir -p $GOPATH
+
+export PATH=$PATH:$GOPATH/bin
+
+# Setup chruby.  NOTE: This should go near the end.
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+
+# =============================================================================
+# ALIASES
+# -----------------------------------------------------------------------------
+# IP addresses
+alias wanip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias whois="whois -h whois-servers.net"
+
+# File size
+alias fs="stat -f '%z bytes'"
+alias df="df -h"
+
+# Tree should ignore some common directories.
+alias tree="tree -I node_modules --prune"
+
+# Helper functions.
+if [[ -e ~/.functions ]]; then
+  source ~/.functions
+fi
+
+# Less helper.
+export LESS='-SRin'
+
+# =============================================================================
+# PLATFORM- AND COMPUTER-SPECIFIC CONFIGURATION
+# -----------------------------------------------------------------------------
+# Mac OS X-specific stuff
+if [[ `uname` == "Darwin" ]]; then
+    alias lock="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+    alias java7="/Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin/java"
+
+    # Prefix our path with /usr/local so Homebrew works.
+    export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+
+    # Append Postgres.app location to $PATH, if it exists.
+    [[ -e /Applications/Postgres.app/Contents/MacOS/bin ]] && export PATH=$PATH:/Applications/Postgres.app/Contents/MacOS/bin
+
+    # Append path for new Pythons
+    export PATH=/usr/local/share/python:$PATH
+
+    # Set node_modules path.
+    export NODE_PATH=/usr/local/lib/node_modules
+
+    # Append our npm directory to our path.
+    if [[ -e /usr/local/share/npm/bin ]]; then
+        export PATH=$PATH:/usr/local/share/npm/bin
+    fi
+fi
+
+# Right at the end, we reset the title in tmux
+print -Pn "\ek%c\e\\"

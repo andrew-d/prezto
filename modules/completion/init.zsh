@@ -8,6 +8,7 @@
 
 # Return if requirements are not found.
 if [[ "$TERM" == 'dumb' ]]; then
+  echo 'Dumb terminal, exiting...'
   return 1
 fi
 
@@ -15,7 +16,7 @@ fi
 fpath=("${0:h}/external/src" $fpath)
 
 # Load and initialize the completion system ignoring insecure directories.
-autoload -Uz compinit && compinit -i
+autoload -Uz compinit && compinit -u -D
 
 #
 # Options
