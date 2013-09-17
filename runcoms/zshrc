@@ -143,7 +143,9 @@ export LESS='-SRin'
 # Mac OS X-specific stuff
 if [[ `uname` == "Darwin" ]]; then
     alias lock="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-    alias java7="/Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin/java"
+    if [[ -e "/Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin/java" ]]; then
+        alias java7="/Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin/java"
+    fi
 
     # Prefix our path with /usr/local so Homebrew works.
     export PATH=/usr/local/bin:/usr/local/sbin:$PATH
@@ -162,6 +164,3 @@ if [[ `uname` == "Darwin" ]]; then
         export PATH=$PATH:/usr/local/share/npm/bin
     fi
 fi
-
-# Right at the end, we reset the title in tmux
-print -Pn "\ek%c\e\\"
