@@ -101,11 +101,6 @@ fi
 # Make the .pythonrc.py file start.
 export PYTHONSTARTUP=~/.pythonrc.py
 
-# Change virtualenvwrapper's home directory, make sure it exists.
-export WORKON_HOME=~/.virtualenvs
-mkdir -p $WORKON_HOME
-[[ -e /usr/local/bin/virtualenvwrapper.sh ]] && source /usr/local/bin/virtualenvwrapper.sh
-
 # Set Go path and binary directory.
 export GOPATH=$HOME/go
 mkdir -p $GOPATH
@@ -164,3 +159,9 @@ if [[ `uname` == "Darwin" ]]; then
         export PATH=$PATH:/usr/local/share/npm/bin
     fi
 fi
+
+# Change virtualenvwrapper's home directory, make sure it exists.
+# NOTE: Must go after path change, above, so it picks up homebrew python.
+export WORKON_HOME=~/.virtualenvs
+mkdir -p $WORKON_HOME
+[[ -e /usr/local/bin/virtualenvwrapper.sh ]] && source /usr/local/bin/virtualenvwrapper.sh
