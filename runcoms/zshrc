@@ -165,6 +165,9 @@ alias df="df -h"
 # Tree should ignore some common directories.
 alias tree="tree -I node_modules --prune"
 
+# Bower should not be globbed
+alias bower="noglob bower"
+
 # Helper functions.
 if [[ -e ~/.functions ]]; then
   source ~/.functions
