@@ -149,7 +149,7 @@ mkdir -p $GOPATH
 export PATH=$PATH:$GOPATH/bin
 
 # Setup chruby.  NOTE: This should go near the end.
-source /usr/local/opt/chruby/share/chruby/chruby.sh
+[[ -s /usr/local/opt/chruby/share/chruby/chruby.sh ]] && source /usr/local/opt/chruby/share/chruby/chruby.sh
 
 # =============================================================================
 # ALIASES
