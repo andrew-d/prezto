@@ -207,3 +207,4 @@ fi
 export WORKON_HOME=~/.virtualenvs
 mkdir -p $WORKON_HOME
 [[ -e /usr/local/bin/virtualenvwrapper.sh ]] && source /usr/local/bin/virtualenvwrapper.sh
+[[ -e /usr/bin/virtualenvwrapper.sh ]] && source /usr/bin/virtualenvwrapper.sh
