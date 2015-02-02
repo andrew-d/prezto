@@ -128,7 +128,7 @@ fi
 # TOOL CONFIGURATION
 # -----------------------------------------------------------------------------
 # Color for grep.
-export GREP_OPTIONS='--color=auto'
+alias grep='grep --color=auto'
 
 # If it exists, use source-highlight.
 if command -v "source-highlight" >/dev/null 2>&1; then
